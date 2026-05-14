@@ -1523,6 +1523,20 @@ html { font-size: 14px; }
 ══════════════════════════════════════ -->
 
 <script>
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, function(s) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    };
+    return map[s];
+  });
+}
+
 // VenueBook - Clean iOS-safe JavaScript
 var VENUES = [
   {id:1,name:'Heritage Durbar Hall',city:'Chennai',addr:'Anna Salai, Chennai 600002',cap:1000,price:65000,rating:4.9,reviews:421,cat:'wedding',emoji:'&#127963;',grad:'g1',igrad:'gi1',desc:'A magnificent heritage hall with Chettinad grandeur. Perfect for grand weddings and royal celebrations.',facilities:['Air Conditioning','Parking','WiFi','Catering','AV System','Stage','Security'],featured:true},
@@ -1694,7 +1708,7 @@ function setupApp() {
   el = R('ph-role'); if (el) el.textContent = role==='owner' ? 'Venue Owner' : role==='admin' ? 'Administrator' : 'Guest';
   var fn = currentUser.name.split(' ')[0];
   el = R('home-headline');
-  if (el) el.innerHTML = 'Hello, ' + fn + '! &#128075;<br><em style="color:#FF385C;font-family:var(--font-d);">Find Your</em> Venue';
+  if (el) el.innerHTML = 'Hello, ' + escapeHTML(fn) + '! &#128075;<br><em style="color:#FF385C;font-family:var(--font-d);">Find Your</em> Venue';
 
   if (role === 'owner') {
     el = R('nt-bookings'); if (el) el.style.display = 'none';
@@ -2432,7 +2446,7 @@ function saveProfile() {
   el = R('ph-name'); if (el) el.textContent = currentUser.name;
   var fn = newName.split(' ')[0];
   el = R('home-headline');
-  if (el) el.innerHTML = 'Hello, ' + fn + '! &#128075;<br><em style="color:#FF385C;font-family:Georgia,serif;">Find Your</em> Venue';
+  if (el) el.innerHTML = 'Hello, ' + escapeHTML(fn) + '! &#128075;<br><em style="color:#FF385C;font-family:Georgia,serif;">Find Your</em> Venue';
 
   saveState();
   closeModal('edit-profile-modal');
@@ -2445,12 +2459,12 @@ function sendChat() {
   if (!inp || !msgs || !inp.value.trim()) return;
   var userMsg = inp.value.trim();
   inp.value = '';
-  msgs.innerHTML += '<div style="display:flex;justify-content:flex-end;margin-bottom:14px;"><div style="background:#111111;border-radius:12px 0 12px 12px;padding:10px 13px;max-width:80%;"><div style="font-size:13px;color:#fff;line-height:1.5;">' + userMsg + '</div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:4px;text-align:right;">Just now</div></div></div>';
+  msgs.innerHTML += '<div style="display:flex;justify-content:flex-end;margin-bottom:14px;"><div style="background:#111111;border-radius:12px 0 12px 12px;padding:10px 13px;max-width:80%;"><div style="font-size:13px;color:#fff;line-height:1.5;">' + escapeHTML(userMsg) + '</div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:4px;text-align:right;">Just now</div></div></div>';
   msgs.scrollTop = msgs.scrollHeight;
   var reply = chatReplies[chatReplyIdx % chatReplies.length];
   chatReplyIdx++;
   setTimeout(function() {
-    msgs.innerHTML += '<div style="display:flex;gap:8px;margin-bottom:14px;"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#FF385C,#FF8C42);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">VA</div><div style="background:#fff;border-radius:0 12px 12px 12px;padding:10px 13px;max-width:80%;box-shadow:0 1px 4px rgba(0,0,0,0.07);"><div style="font-size:13px;color:#111111;line-height:1.5;">' + reply + '</div><div style="font-size:10px;color:#B0B0B0;margin-top:4px;">Just now</div></div></div>';
+    msgs.innerHTML += '<div style="display:flex;gap:8px;margin-bottom:14px;"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#FF385C,#FF8C42);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">VA</div><div style="background:#fff;border-radius:0 12px 12px 12px;padding:10px 13px;max-width:80%;box-shadow:0 1px 4px rgba(0,0,0,0.07);"><div style="font-size:13px;color:#111111;line-height:1.5;">' + escapeHTML(reply) + '</div><div style="font-size:10px;color:#B0B0B0;margin-top:4px;">Just now</div></div></div>';
     msgs.scrollTop = msgs.scrollHeight;
   }, 800);
 }
