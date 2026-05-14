@@ -2157,6 +2157,16 @@ function confirmBooking() {
 
   var cr = R('conf-ref'); if (cr) cr.textContent = ref;
 
+  renderBookingSummary(v, dateStr, timeStr, type, guests);
+
+  saveState();
+  renderBookings('all');
+  updateProfileStats();
+  navTo('confirm');
+  showToast('Booking sent!', 'ok');
+}
+
+function renderBookingSummary(v, dateStr, timeStr, type, guests) {
   var cd = R('conf-details');
   if (cd) {
     cd.innerHTML =
@@ -2193,12 +2203,6 @@ function confirmBooking() {
         '<span class="cdr-total">' + rupee(Math.round(v.price * 1.05)) + '</span>' +
       '</div>';
   }
-
-  saveState();
-  renderBookings('all');
-  updateProfileStats();
-  navTo('confirm');
-  showToast('Booking sent!', 'ok');
 }
 
 // BOOKINGS LIST
