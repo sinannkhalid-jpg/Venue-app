@@ -1539,13 +1539,13 @@ function escapeHTML(str) {
 
 // VenueBook - Clean iOS-safe JavaScript
 var VENUES = [
-  {id:1,name:'Heritage Durbar Hall',city:'Chennai',addr:'Anna Salai, Chennai 600002',cap:1000,price:65000,rating:4.9,reviews:421,cat:'wedding',emoji:'&#127963;',grad:'g1',igrad:'gi1',desc:'A magnificent heritage hall with Chettinad grandeur. Perfect for grand weddings and royal celebrations.',facilities:['Air Conditioning','Parking','WiFi','Catering','AV System','Stage','Security'],featured:true},
-  {id:2,name:'Azure Convention Centre',city:'Mumbai',addr:'Bandra Kurla Complex, Mumbai',cap:600,price:82000,rating:5.0,reviews:203,cat:'corporate',emoji:'&#127970;',grad:'g2',igrad:'gi2',desc:'Modern waterfront convention centre. Ideal for corporate conferences and product launches.',facilities:['Air Conditioning','Parking','WiFi','AV System','Stage','Security','Catering'],featured:true},
-  {id:3,name:'Emerald Garden Hall',city:'Bangalore',addr:'Indiranagar, Bangalore 560038',cap:400,price:48000,rating:4.7,reviews:88,cat:'wedding',emoji:'&#127807;',grad:'g3',igrad:'gi3',desc:'Lush outdoor pavilion surrounded by greenery. A romantic setting for garden weddings and intimate events.',facilities:['Parking','Catering','WiFi','AV System'],featured:true},
-  {id:4,name:'Royal Amphitheatre',city:'Delhi',addr:'Connaught Place, New Delhi',cap:2000,price:95000,rating:4.9,reviews:512,cat:'concert',emoji:'&#127917;',grad:'g4',igrad:'gi4',desc:'Grand open-air amphitheatre for concerts and large-scale performances.',facilities:['Parking','Security','AV System','Stage','WiFi'],featured:true},
-  {id:5,name:'Grand Palace Auditorium',city:'Kochi',addr:'Marine Drive, Kochi 682031',cap:800,price:55000,rating:4.8,reviews:350,cat:'wedding',emoji:'&#127984;',grad:'g5',igrad:'gi5',desc:'Elegant palace-style auditorium. Perfect for royal weddings and high-profile galas.',facilities:['Air Conditioning','Parking','WiFi','Catering','AV System','Stage','Prayer Room','Security'],featured:false},
-  {id:6,name:'Skyline Ballroom',city:'Mumbai',addr:'Lower Parel, Mumbai 400013',cap:500,price:78000,rating:4.9,reviews:612,cat:'party',emoji:'&#127750;',grad:'g1',igrad:'gi2',desc:'Stunning rooftop ballroom with panoramic city views. Ultimate venue for upscale parties.',facilities:['Air Conditioning','Parking','WiFi','Catering','Security'],featured:false},
-  {id:7,name:'Pearl Convention Centre',city:'Hyderabad',addr:'HITEC City, Hyderabad 500081',cap:1200,price:63000,rating:4.7,reviews:441,cat:'corporate',emoji:'&#127967;',grad:'g2',igrad:'gi3',desc:'Premium convention facility. Modern infrastructure for large conferences and exhibitions.',facilities:['Air Conditioning','Parking','WiFi','AV System','Stage','Security','Catering'],featured:false}
+  {id:1,name:'Heritage Durbar Hall',city:'Chennai',addr:'Anna Salai, Chennai 600002',cap:1000,price:65000,rating:4.9,reviews:421,cat:'wedding',image:'https://picsum.photos/seed/83141/600/400',grad:'g1',igrad:'gi1',desc:'A magnificent heritage hall with Chettinad grandeur. Perfect for grand weddings and royal celebrations.',facilities:['Air Conditioning','Parking','WiFi','Catering','AV System','Stage','Security'],featured:true},
+  {id:2,name:'Azure Convention Centre',city:'Mumbai',addr:'Bandra Kurla Complex, Mumbai',cap:600,price:82000,rating:5.0,reviews:203,cat:'corporate',image:'https://picsum.photos/seed/83547/600/400',grad:'g2',igrad:'gi2',desc:'Modern waterfront convention centre. Ideal for corporate conferences and product launches.',facilities:['Air Conditioning','Parking','WiFi','AV System','Stage','Security','Catering'],featured:true},
+  {id:3,name:'Emerald Garden Hall',city:'Bangalore',addr:'Indiranagar, Bangalore 560038',cap:400,price:48000,rating:4.7,reviews:88,cat:'wedding',image:'https://picsum.photos/seed/83937/600/400',grad:'g3',igrad:'gi3',desc:'Lush outdoor pavilion surrounded by greenery. A romantic setting for garden weddings and intimate events.',facilities:['Parking','Catering','WiFi','AV System'],featured:true},
+  {id:4,name:'Royal Amphitheatre',city:'Delhi',addr:'Connaught Place, New Delhi',cap:2000,price:95000,rating:4.9,reviews:512,cat:'concert',image:'https://picsum.photos/seed/84298/600/400',grad:'g4',igrad:'gi4',desc:'Grand open-air amphitheatre for concerts and large-scale performances.',facilities:['Parking','Security','AV System','Stage','WiFi'],featured:true},
+  {id:5,name:'Grand Palace Auditorium',city:'Kochi',addr:'Marine Drive, Kochi 682031',cap:800,price:55000,rating:4.8,reviews:350,cat:'wedding',image:'https://picsum.photos/seed/84636/600/400',grad:'g5',igrad:'gi5',desc:'Elegant palace-style auditorium. Perfect for royal weddings and high-profile galas.',facilities:['Air Conditioning','Parking','WiFi','Catering','AV System','Stage','Prayer Room','Security'],featured:false},
+  {id:6,name:'Skyline Ballroom',city:'Mumbai',addr:'Lower Parel, Mumbai 400013',cap:500,price:78000,rating:4.9,reviews:612,cat:'party',image:'https://picsum.photos/seed/85024/600/400',grad:'g1',igrad:'gi2',desc:'Stunning rooftop ballroom with panoramic city views. Ultimate venue for upscale parties.',facilities:['Air Conditioning','Parking','WiFi','Catering','Security'],featured:false},
+  {id:7,name:'Pearl Convention Centre',city:'Hyderabad',addr:'HITEC City, Hyderabad 500081',cap:1200,price:63000,rating:4.7,reviews:441,cat:'corporate',image:'https://picsum.photos/seed/85400/600/400',grad:'g2',igrad:'gi3',desc:'Premium convention facility. Modern infrastructure for large conferences and exhibitions.',facilities:['Air Conditioning','Parking','WiFi','AV System','Stage','Security','Catering'],featured:false}
 ];
 
 var USERS = {
@@ -1752,7 +1752,7 @@ function renderCarousel() {
   for (var i = 0; i < featured.length; i++) {
     var v = featured[i];
     html += '<div class="fc ' + v.grad + '" onclick="openDetail(' + v.id + ')">';
-    html += '<div class="fc-bg">' + v.emoji + '</div>';
+    html += '<div class="fc-bg" style="background: url(' + v.image + ') center/cover no-repeat;"></div>';
     html += '<div class="fc-grad"></div>';
     html += '<div class="fc-body">';
     html += '<div class="fc-name">' + v.name + '</div>';
@@ -1790,7 +1790,7 @@ function renderVenueList(containerId, venues) {
     var v = venues[i];
     var sv = hasSaved(v.id);
     html += '<div class="vc" onclick="openDetail(' + v.id + ')">';
-    html += '<div class="vc-img ' + v.igrad + '">' + v.emoji + '</div>';
+    html += '<div class="vc-img ' + v.igrad + '" style="background: url(' + v.image + ') center/cover no-repeat;"></div>';
     html += '<div class="vc-body"><div>';
     html += '<div class="vc-name">' + v.name + '</div>';
     html += '<div class="vc-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + v.city + '</div>';
@@ -1809,39 +1809,39 @@ function renderVenueList(containerId, venues) {
 // VENUE SLIDE DATA — emoji + gradient per category, 5 slides each
 var VENUE_SLIDES = {
   wedding: [
-    { emoji: '&#128141;', label: 'Main Hall',      grad: 'linear-gradient(145deg,#2C1A0E,#6B3A2A)' },
-    { emoji: '&#128144;', label: 'Bridal Suite',   grad: 'linear-gradient(145deg,#1A0A1A,#5C1A4A)' },
-    { emoji: '&#127800;', label: 'Garden Area',    grad: 'linear-gradient(145deg,#0A2010,#1A5C30)' },
-    { emoji: '&#127860;', label: 'Dining Hall',    grad: 'linear-gradient(145deg,#1A1000,#5C4010)' },
-    { emoji: '&#10024;',  label: 'Stage & Decor',  grad: 'linear-gradient(145deg,#0A0A2C,#1A1A6B)' }
+    { image: 'https://picsum.photos/seed/97337/600/400', label: 'Main Hall',      grad: 'linear-gradient(145deg,#2C1A0E,#6B3A2A)' },
+    { image: 'https://picsum.photos/seed/97439/600/400', label: 'Bridal Suite',   grad: 'linear-gradient(145deg,#1A0A1A,#5C1A4A)' },
+    { image: 'https://picsum.photos/seed/97541/600/400', label: 'Garden Area',    grad: 'linear-gradient(145deg,#0A2010,#1A5C30)' },
+    { image: 'https://picsum.photos/seed/97643/600/400', label: 'Dining Hall',    grad: 'linear-gradient(145deg,#1A1000,#5C4010)' },
+    { image: 'https://picsum.photos/seed/97745/600/400',  label: 'Stage & Decor',  grad: 'linear-gradient(145deg,#0A0A2C,#1A1A6B)' }
   ],
   corporate: [
-    { emoji: '&#127970;', label: 'Conference Hall',   grad: 'linear-gradient(145deg,#0A1020,#1A3060)' },
-    { emoji: '&#128202;', label: 'Board Room',        grad: 'linear-gradient(145deg,#0D1A0D,#1A3A1A)' },
-    { emoji: '&#127926;', label: 'Auditorium',        grad: 'linear-gradient(145deg,#1A0A0A,#4A1A1A)' },
-    { emoji: '&#128225;', label: 'Presentation Area', grad: 'linear-gradient(145deg,#0A0A1A,#2A2A5A)' },
-    { emoji: '&#9749;',   label: 'Lounge',            grad: 'linear-gradient(145deg,#1A1000,#3A2A00)' }
+    { image: 'https://picsum.photos/seed/97866/600/400', label: 'Conference Hall',   grad: 'linear-gradient(145deg,#0A1020,#1A3060)' },
+    { image: 'https://picsum.photos/seed/97971/600/400', label: 'Board Room',        grad: 'linear-gradient(145deg,#0D1A0D,#1A3A1A)' },
+    { image: 'https://picsum.photos/seed/98076/600/400', label: 'Auditorium',        grad: 'linear-gradient(145deg,#1A0A0A,#4A1A1A)' },
+    { image: 'https://picsum.photos/seed/98181/600/400', label: 'Presentation Area', grad: 'linear-gradient(145deg,#0A0A1A,#2A2A5A)' },
+    { image: 'https://picsum.photos/seed/98286/600/400',   label: 'Lounge',            grad: 'linear-gradient(145deg,#1A1000,#3A2A00)' }
   ],
   concert: [
-    { emoji: '&#127914;', label: 'Main Stage',     grad: 'linear-gradient(145deg,#0A001A,#2A006A)' },
-    { emoji: '&#127908;', label: 'Sound Setup',    grad: 'linear-gradient(145deg,#1A0A00,#5A2A00)' },
-    { emoji: '&#127899;', label: 'Lighting Rig',   grad: 'linear-gradient(145deg,#0A0A00,#3A3A00)' },
-    { emoji: '&#127917;', label: 'Backstage',      grad: 'linear-gradient(145deg,#1A001A,#4A004A)' },
-    { emoji: '&#127882;', label: 'VIP Lounge',     grad: 'linear-gradient(145deg,#0A1A10,#004A28)' }
+    { image: 'https://picsum.photos/seed/98408/600/400', label: 'Main Stage',     grad: 'linear-gradient(145deg,#0A001A,#2A006A)' },
+    { image: 'https://picsum.photos/seed/98510/600/400', label: 'Sound Setup',    grad: 'linear-gradient(145deg,#1A0A00,#5A2A00)' },
+    { image: 'https://picsum.photos/seed/98612/600/400', label: 'Lighting Rig',   grad: 'linear-gradient(145deg,#0A0A00,#3A3A00)' },
+    { image: 'https://picsum.photos/seed/98714/600/400', label: 'Backstage',      grad: 'linear-gradient(145deg,#1A001A,#4A004A)' },
+    { image: 'https://picsum.photos/seed/98816/600/400', label: 'VIP Lounge',     grad: 'linear-gradient(145deg,#0A1A10,#004A28)' }
   ],
   party: [
-    { emoji: '&#127881;', label: 'Banquet Hall',   grad: 'linear-gradient(145deg,#1A000A,#5A0030)' },
-    { emoji: '&#127942;', label: 'Dance Floor',    grad: 'linear-gradient(145deg,#0A0A1A,#2A006A)' },
-    { emoji: '&#127870;', label: 'Dining Area',    grad: 'linear-gradient(145deg,#1A0800,#4A2000)' },
-    { emoji: '&#127880;', label: 'Decor Setup',    grad: 'linear-gradient(145deg,#0A1000,#004A20)' },
-    { emoji: '&#127928;', label: 'DJ Booth',       grad: 'linear-gradient(145deg,#1A001A,#500050)' }
+    { image: 'https://picsum.photos/seed/98933/600/400', label: 'Banquet Hall',   grad: 'linear-gradient(145deg,#1A000A,#5A0030)' },
+    { image: 'https://picsum.photos/seed/99035/600/400', label: 'Dance Floor',    grad: 'linear-gradient(145deg,#0A0A1A,#2A006A)' },
+    { image: 'https://picsum.photos/seed/99137/600/400', label: 'Dining Area',    grad: 'linear-gradient(145deg,#1A0800,#4A2000)' },
+    { image: 'https://picsum.photos/seed/99239/600/400', label: 'Decor Setup',    grad: 'linear-gradient(145deg,#0A1000,#004A20)' },
+    { image: 'https://picsum.photos/seed/99341/600/400', label: 'DJ Booth',       grad: 'linear-gradient(145deg,#1A001A,#500050)' }
   ],
   default: [
-    { emoji: '&#127963;', label: 'Grand Hall',     grad: 'linear-gradient(145deg,#1A0E05,#5C3A18)' },
-    { emoji: '&#127984;', label: 'Foyer',          grad: 'linear-gradient(145deg,#0E1A10,#1A4A22)' },
-    { emoji: '&#127968;', label: 'Reception',      grad: 'linear-gradient(145deg,#0A0E1A,#1A2A5C)' },
-    { emoji: '&#128247;', label: 'Event Space',    grad: 'linear-gradient(145deg,#1A1010,#4A2020)' },
-    { emoji: '&#127749;', label: 'Outdoor Area',   grad: 'linear-gradient(145deg,#051A10,#0A4A28)' }
+    { image: 'https://picsum.photos/seed/99460/600/400', label: 'Grand Hall',     grad: 'linear-gradient(145deg,#1A0E05,#5C3A18)' },
+    { image: 'https://picsum.photos/seed/99562/600/400', label: 'Foyer',          grad: 'linear-gradient(145deg,#0E1A10,#1A4A22)' },
+    { image: 'https://picsum.photos/seed/99664/600/400', label: 'Reception',      grad: 'linear-gradient(145deg,#0A0E1A,#1A2A5C)' },
+    { image: 'https://picsum.photos/seed/99766/600/400', label: 'Event Space',    grad: 'linear-gradient(145deg,#1A1010,#4A2020)' },
+    { image: 'https://picsum.photos/seed/99868/600/400', label: 'Outdoor Area',   grad: 'linear-gradient(145deg,#051A10,#0A4A28)' }
   ]
 };
 
@@ -1895,10 +1895,9 @@ function openDetail(id) {
   var slidesHtml = '';
   for (var i = 0; i < galleryPhotos.length; i++) {
     var slide = galleryPhotos[i];
-    slidesHtml += '<div class="gallery-slide" style="background:' + slide.grad + ';">';
-    slidesHtml += '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;">';
-    slidesHtml += '<span style="font-size:72px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">' + slide.emoji + '</span>';
-    slidesHtml += '<span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.5px;text-transform:uppercase;">' + slide.label + '</span>';
+    slidesHtml += '<div class="gallery-slide" style="background: url(' + slide.image + ') center/cover no-repeat;">';
+    slidesHtml += '<div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:10px;padding-bottom:30px;position:relative;z-index:2;">';
+    slidesHtml += '<span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.9);letter-spacing:.5px;text-transform:uppercase;text-shadow: 0 1px 4px rgba(0,0,0,0.5);">' + slide.label + '</span>';
     slidesHtml += '</div>';
     slidesHtml += '<div class="slide-overlay"></div>';
     slidesHtml += '</div>';
@@ -1914,9 +1913,9 @@ function openDetail(id) {
   var thumbsHtml = '';
   for (var i = 0; i < galleryPhotos.length; i++) {
     var slide = galleryPhotos[i];
-    thumbsHtml += '<div class="thumb-item' + (i === 0 ? ' active' : '') + '" onclick="galleryGoTo(' + i + ')" style="background:' + slide.grad + ';">';
-    thumbsHtml += '<span class="t-emoji">' + slide.emoji + '</span>';
-    thumbsHtml += '<span class="t-num">' + slide.label + '</span>';
+    thumbsHtml += '<div class="thumb-item' + (i === 0 ? ' active' : '') + '" onclick="galleryGoTo(' + i + ')" style="background: url(' + slide.image + ') center/cover no-repeat;">';
+    thumbsHtml += '<div style="position:absolute;inset:0;background:rgba(0,0,0,0.3);"></div>';
+    thumbsHtml += '<span class="t-num" style="position:relative;z-index:2;color:#fff;text-shadow: 0 1px 2px rgba(0,0,0,0.8);">' + slide.label + '</span>';
     thumbsHtml += '</div>';
   }
 
@@ -2345,7 +2344,7 @@ function renderOwnerVenues() {
   for (var i = 0; i < Math.min(3, VENUES.length); i++) {
     var v = VENUES[i];
     html += '<div style="background:#fff;border:1px solid #EBEBEB;border-radius:22px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07);">';
-    html += '<div class="' + v.grad + '" style="height:100px;display:flex;align-items:center;justify-content:center;font-size:44px;">' + v.emoji + '</div>';
+    html += '<div style="height:100px;background: url(' + v.image + ') center/cover no-repeat;"></div>';
     html += '<div style="padding:14px;">';
     html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;"><div style="font-size:15px;font-weight:700;">' + v.name + '</div><span class="badge badge-green">Active</span></div>';
     html += '<div style="font-size:12px;color:#717171;margin-bottom:10px;">&#128205; ' + v.city + ' &middot; &#128101; ' + v.cap.toLocaleString('en-IN') + '</div>';
@@ -2380,11 +2379,12 @@ function publishVenue() {
   var cap = parseInt(R('av-cap').value) || 0;
   var price = parseInt(R('av-price').value) || 0;
   if (!name || !city || !cap || !price) { showToast('Please fill all required fields', 'err'); return; }
-  var emojis = ['&#127963;','&#127970;','&#127917;','&#127807;','&#127984;','&#127750;'];
   var grads = ['g1','g2','g3','g4','g5'];
   var igrads = ['gi1','gi2','gi3','gi4','gi5'];
   var idx = Math.floor(Math.random() * 5);
-  VENUES.push({id:VENUES.length+1, name:name, city:city, addr:R('av-addr').value||city, cap:cap, price:price, rating:5.0, reviews:0, cat:R('av-cat').value||'venue', emoji:emojis[idx], grad:grads[idx], igrad:igrads[idx], desc:R('av-desc').value||'A beautiful event venue.', facilities:myFacilities.slice(), featured:false});
+  var randSeed = Math.floor(Math.random() * 100000);
+  var image = 'https://picsum.photos/seed/' + randSeed + '/600/400';
+  VENUES.push({id:VENUES.length+1, name:name, city:city, addr:R('av-addr').value||city, cap:cap, price:price, rating:5.0, reviews:0, cat:R('av-cat').value||'venue', image:image, grad:grads[idx], igrad:igrads[idx], desc:R('av-desc').value||'A beautiful event venue.', facilities:myFacilities.slice(), featured:false});
   myFacilities = [];
   var cnt = R('os-venues'); if (cnt) cnt.textContent = parseInt(cnt.textContent) + 1;
   showToast('Venue published!', 'ok');
