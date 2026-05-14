@@ -1541,7 +1541,7 @@ var USERS = {
 };
 
 var currentUser = null;
-var savedIds = [];
+var savedIds = new Set();
 var myBookings = [
   {id:'VB-A82K91',venueId:5,venue:'Grand Palace Auditorium',date:'Apr 18, 2026',time:'9:00 AM to 5:00 PM',type:'Wedding Ceremony',guests:350,price:55000,status:'confirmed'},
   {id:'VB-B34T22',venueId:2,venue:'Azure Convention Centre',date:'Mar 28, 2026',time:'9:00 AM to 5:00 PM',type:'Corporate Conference',guests:120,price:82000,status:'pending'}
@@ -1574,8 +1574,7 @@ var toastTimer;
 function R(id) { return document.getElementById(id); }
 
 function hasSaved(id) {
-  for (var i = 0; i < savedIds.length; i++) { if (savedIds[i] === id) return true; }
-  return false;
+  return savedIds.has(id);
 }
 
 function starsHTML(r, white) {
@@ -1609,7 +1608,7 @@ function doLogin() {
   try {
     localStorage.setItem('vb_user', JSON.stringify(currentUser));
     localStorage.setItem('vb_bookings', JSON.stringify(myBookings));
-    localStorage.setItem('vb_saved', JSON.stringify(savedIds));
+    localStorage.setItem('vb_saved', JSON.stringify(Array.from(savedIds)));
   } catch(e) {}
   R('auth-login').classList.remove('active');
   R('main-app').style.display = 'block';
@@ -1642,7 +1641,7 @@ function doLogout() {
     localStorage.removeItem('vb_saved');
   } catch(e) {}
   currentUser = null;
-  savedIds = [];
+  savedIds = new Set();
   myBookings = [];
   R('main-app').style.display = 'none';
   R('bottom-nav').classList.remove('visible');
@@ -1662,7 +1661,7 @@ function saveState() {
     if (currentUser) {
       localStorage.setItem('vb_user', JSON.stringify(currentUser));
       localStorage.setItem('vb_bookings', JSON.stringify(myBookings));
-      localStorage.setItem('vb_saved', JSON.stringify(savedIds));
+      localStorage.setItem('vb_saved', JSON.stringify(Array.from(savedIds)));
     }
   } catch(e) {}
 }
@@ -1678,7 +1677,7 @@ function restoreSession() {
     if (savedBk) myBookings = JSON.parse(savedBk);
     // Restore saved venues
     var savedSv = localStorage.getItem('vb_saved');
-    if (savedSv) savedIds = JSON.parse(savedSv);
+    if (savedSv) savedIds = new Set(JSON.parse(savedSv));
     return true;
   } catch(e) {
     return false;
@@ -2026,15 +2025,13 @@ function applyFilter() {
 
 // SAVED
 function toggleSaved(btn, id) {
-  var idx = -1;
-  for (var i = 0; i < savedIds.length; i++) { if (savedIds[i] === id) { idx = i; break; } }
-  if (idx >= 0) {
-    savedIds.splice(idx, 1);
+  if (savedIds.has(id)) {
+    savedIds.delete(id);
     btn.classList.remove('saved');
     btn.querySelector('svg').setAttribute('fill', 'none');
     showToast('Removed from saved');
   } else {
-    savedIds.push(id);
+    savedIds.add(id);
     btn.classList.add('saved');
     btn.querySelector('svg').setAttribute('fill', 'currentColor');
     showToast('Saved!', 'ok');
@@ -2277,7 +2274,7 @@ function setInboxTab(el, filter) {
 function updateProfileStats() {
   var el;
   el = R('ps-bk'); if (el) el.textContent = myBookings.length;
-  el = R('ps-saved'); if (el) el.textContent = savedIds.length;
+  el = R('ps-saved'); if (el) el.textContent = savedIds.size;
 }
 
 // OWNER
