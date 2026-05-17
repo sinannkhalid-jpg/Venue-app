@@ -82,20 +82,24 @@ background: #ffffff;
 overflow: hidden;
 }
 
+/* Shared scroll utility */
+.scroll-y {
+overflow-y: auto;
+overflow-x: hidden;
+-webkit-overflow-scrolling: touch;
+scrollbar-width: none;
+}
+.scroll-y::-webkit-scrollbar { display: none; }
+
 /* Screens — absolute fill, scroll within */
 .screen {
 position: absolute;
 top: 0; left: 0; right: 0;
 bottom: 60px;
-overflow-y: auto;
-overflow-x: hidden;
--webkit-overflow-scrolling: touch;
-scrollbar-width: none;
 display: none;
 background: #fff;
 animation: sIn .2s ease;
 }
-.screen::-webkit-scrollbar { display: none; }
 .screen.active { display: block; }
 @keyframes sIn { from { opacity:0; } to { opacity:1; } }
 
@@ -103,15 +107,10 @@ animation: sIn .2s ease;
 .auth-screen {
 position: absolute;
 top: 0; left: 0; right: 0; bottom: 0;
-overflow-y: auto;
-overflow-x: hidden;
--webkit-overflow-scrolling: touch;
-scrollbar-width: none;
 display: none;
 background: #fff;
 z-index: 200;
 }
-.auth-screen::-webkit-scrollbar { display: none; }
 .auth-screen.active { display: block; }
 
 /* Bottom nav — absolute at bottom */
@@ -835,7 +834,7 @@ html { font-size: 14px; }
      AUTH: LOGIN
 ══════════════════════════════════════ -->
 
-<div class="auth-screen active" id="auth-login">
+<div class="auth-screen scroll-y active" id="auth-login">
   <div style="padding:60px 24px 40px;display:flex;flex-direction:column;">
     <div style="flex:1;">
       <div class="auth-logo">Venue<em>Book</em></div>
@@ -876,7 +875,7 @@ html { font-size: 14px; }
 
 <!-- AUTH: REGISTER -->
 
-<div class="auth-screen" id="auth-register">
+<div class="auth-screen scroll-y" id="auth-register">
   <div style="padding:60px 24px 40px;display:flex;flex-direction:column;">
     <div onclick="goTo('auth-register','auth-login')" style="display:flex;align-items:center;gap:8px;margin-bottom:24px;cursor:pointer;color:#717171;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
@@ -932,7 +931,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: HOME ══ -->
 
-<div class="screen" id="sc-home">
+<div class="screen scroll-y" id="sc-home">
   <div style="padding:24px 20px 0;display:flex;justify-content:space-between;align-items:center;">
     <div class="t-wordmark">VenueBook</div>
     <div class="icon-btn" onclick="showToast('No new notifications')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
@@ -991,7 +990,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: SEARCH ══ -->
 
-<div class="screen" id="sc-search">
+<div class="screen scroll-y" id="sc-search">
   <div style="padding:20px 20px 0;position:sticky;top:0;background:#fff;z-index:10;">
     <div class="search-wrap" style="padding:0 0 12px;">
       <div class="search-bar">
@@ -1010,13 +1009,13 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: DETAIL ══ -->
 
-<div class="screen" id="sc-detail">
+<div class="screen scroll-y" id="sc-detail">
   <div id="detail-inner"></div>
 </div>
 
 <!-- ══ SCREEN: BOOKING ══ -->
 
-<div class="screen" id="sc-booking">
+<div class="screen scroll-y" id="sc-booking">
   <div style="padding:20px 20px 0;display:flex;align-items:center;gap:12px;">
     <div onclick="navTo('detail')" style="cursor:pointer;color:#717171;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
@@ -1126,7 +1125,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: CONFIRM ══ -->
 
-<div class="screen" id="sc-confirm">
+<div class="screen scroll-y" id="sc-confirm">
   <div class="confirm-screen-wrap">
 
 ```
@@ -1190,7 +1189,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: SAVED ══ -->
 
-<div class="screen" id="sc-saved">
+<div class="screen scroll-y" id="sc-saved">
   <div style="padding:24px 20px 0;">
     <div class="t-wordmark" style="margin-bottom:10px;">VenueBook</div>
     <div style="font-family:var(--font-d);font-size:28px;font-weight:500;color:#111111;">Saved</div>
@@ -1202,7 +1201,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: BOOKINGS ══ -->
 
-<div class="screen" id="sc-bookings">
+<div class="screen scroll-y" id="sc-bookings">
   <div style="padding:24px 20px 0;">
     <div class="t-wordmark" style="margin-bottom:10px;">VenueBook</div>
     <div style="font-family:var(--font-d);font-size:28px;font-weight:500;color:#111111;">Bookings</div>
@@ -1219,7 +1218,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: INBOX ══ -->
 
-<div class="screen" id="sc-inbox">
+<div class="screen scroll-y" id="sc-inbox">
   <div style="padding:24px 20px 0;display:flex;justify-content:space-between;align-items:center;">
     <div style="font-family:var(--font-d);font-size:28px;font-weight:500;">Messages</div>
     <div style="display:flex;gap:8px;">
@@ -1237,7 +1236,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: PROFILE ══ -->
 
-<div class="screen" id="sc-profile">
+<div class="screen scroll-y" id="sc-profile">
   <div style="padding:24px 20px 0;display:flex;justify-content:space-between;align-items:center;">
     <div style="font-family:var(--font-d);font-size:28px;font-weight:500;">Profile</div>
     <div style="display:flex;gap:8px;">
@@ -1321,7 +1320,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: OWNER DASHBOARD ══ -->
 
-<div class="screen" id="sc-owner">
+<div class="screen scroll-y" id="sc-owner">
   <div style="padding:24px 20px 0;">
     <div class="t-wordmark" style="margin-bottom:6px;color:#FF385C;">Owner Dashboard</div>
     <div style="font-family:var(--font-d);font-size:26px;font-weight:500;" id="owner-greeting">Welcome back</div>
@@ -1345,7 +1344,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: ADD VENUE ══ -->
 
-<div class="screen" id="sc-add-venue">
+<div class="screen scroll-y" id="sc-add-venue">
   <div style="padding:20px 20px 0;display:flex;align-items:center;gap:12px;">
     <div onclick="navTo('owner')" style="cursor:pointer;color:#717171;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
     <div style="font-family:var(--font-d);font-size:22px;font-weight:500;">Add New Venue</div>
@@ -1387,7 +1386,7 @@ html { font-size: 14px; }
 
 <!-- ══ SCREEN: ADMIN ══ -->
 
-<div class="screen" id="sc-admin">
+<div class="screen scroll-y" id="sc-admin">
   <div style="padding:24px 20px 0;">
     <div class="t-wordmark" style="margin-bottom:6px;color:#00A699;">Admin Panel</div>
     <div style="font-family:var(--font-d);font-size:26px;font-weight:500;">System Overview</div>
