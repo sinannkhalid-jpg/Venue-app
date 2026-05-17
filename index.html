@@ -232,7 +232,7 @@ letter-spacing:.1px;
 .carousel-track::-webkit-scrollbar{display:none;}
 .fc{flex-shrink:0;width:290px;height:195px;border-radius:24px;overflow:hidden;position:relative;scroll-snap-align:center;cursor:pointer;box-shadow:0 4px 28px rgba(0,0,0,0.11);transition:transform .2s;}
 .fc:active{transform:scale(.97);}
-.fc-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:72px;}
+.fc-bg{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#EBEBEB;}
 .fc-grad{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.0) 30%,rgba(0,0,0,.68) 100%);}
 .fc-body{position:absolute;inset:0;padding:16px;display:flex;flex-direction:column;justify-content:flex-end;}
 .fc-name{font-family:var(–font-d);font-size:18px;font-weight:500;color:#fff;line-height:1.2;}
@@ -249,7 +249,7 @@ letter-spacing:.1px;
 /* ── VENUE LIST CARD ── */
 .vc{background:#ffffff;border-radius:20px;border:1.5px solid #EBEBEB;overflow:hidden;display:flex;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,0.07),0 1px 3px rgba(0,0,0,0.04);transition:all .2s;position:relative;}
 .vc:active{transform:scale(.98);box-shadow:0 2px 14px rgba(0,0,0,0.09);}
-.vc-img{width:105px;height:105px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.vc-img{width:105px;height:105px;flex-shrink:0;background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#EBEBEB;}
 .vc-body{flex:1;padding:14px 14px 12px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;}
 .vc-name{font-size:15px;font-weight:700;color:#111111;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .vc-loc{display:flex;align-items:center;gap:3px;font-size:12px;color:#717171;margin-top:3px;}
@@ -300,7 +300,10 @@ width: 100%;
 height: 100%;
 position: relative;
 overflow: hidden;
-background: #111;
+background-color: #111;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
 }
 .gallery-slide .slide-overlay {
 position: absolute; inset: 0;
@@ -371,7 +374,10 @@ cursor: pointer;
 border: 2.5px solid transparent;
 transition: all .2s;
 opacity: .55;
-background: #F7F7F7;
+background-color: #F7F7F7;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
 display: flex; flex-direction: column;
 align-items: center; justify-content: center;
 gap: 2px;
@@ -380,9 +386,7 @@ position: relative;
 .thumb-item.active {
 border-color: #111111;
 opacity: 1;
-background: #F0F0F0;
 }
-.thumb-item .t-emoji { font-size: 20px; line-height: 1; }
 .thumb-item .t-num {
 font-size: 8px; font-weight: 700;
 color: rgba(255,255,255,0.7); letter-spacing: .2px;
@@ -1523,15 +1527,29 @@ html { font-size: 14px; }
 ══════════════════════════════════════ -->
 
 <script>
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, function(s) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    };
+    return map[s];
+  });
+}
+
 // VenueBook - Clean iOS-safe JavaScript
 var VENUES = [
-  {id:1,name:'Heritage Durbar Hall',city:'Chennai',addr:'Anna Salai, Chennai 600002',cap:1000,price:65000,rating:4.9,reviews:421,cat:'wedding',emoji:'&#127963;',grad:'g1',igrad:'gi1',desc:'A magnificent heritage hall with Chettinad grandeur. Perfect for grand weddings and royal celebrations.',facilities:['Air Conditioning','Parking','WiFi','Catering','AV System','Stage','Security'],featured:true},
-  {id:2,name:'Azure Convention Centre',city:'Mumbai',addr:'Bandra Kurla Complex, Mumbai',cap:600,price:82000,rating:5.0,reviews:203,cat:'corporate',emoji:'&#127970;',grad:'g2',igrad:'gi2',desc:'Modern waterfront convention centre. Ideal for corporate conferences and product launches.',facilities:['Air Conditioning','Parking','WiFi','AV System','Stage','Security','Catering'],featured:true},
-  {id:3,name:'Emerald Garden Hall',city:'Bangalore',addr:'Indiranagar, Bangalore 560038',cap:400,price:48000,rating:4.7,reviews:88,cat:'wedding',emoji:'&#127807;',grad:'g3',igrad:'gi3',desc:'Lush outdoor pavilion surrounded by greenery. A romantic setting for garden weddings and intimate events.',facilities:['Parking','Catering','WiFi','AV System'],featured:true},
-  {id:4,name:'Royal Amphitheatre',city:'Delhi',addr:'Connaught Place, New Delhi',cap:2000,price:95000,rating:4.9,reviews:512,cat:'concert',emoji:'&#127917;',grad:'g4',igrad:'gi4',desc:'Grand open-air amphitheatre for concerts and large-scale performances.',facilities:['Parking','Security','AV System','Stage','WiFi'],featured:true},
-  {id:5,name:'Grand Palace Auditorium',city:'Kochi',addr:'Marine Drive, Kochi 682031',cap:800,price:55000,rating:4.8,reviews:350,cat:'wedding',emoji:'&#127984;',grad:'g5',igrad:'gi5',desc:'Elegant palace-style auditorium. Perfect for royal weddings and high-profile galas.',facilities:['Air Conditioning','Parking','WiFi','Catering','AV System','Stage','Prayer Room','Security'],featured:false},
-  {id:6,name:'Skyline Ballroom',city:'Mumbai',addr:'Lower Parel, Mumbai 400013',cap:500,price:78000,rating:4.9,reviews:612,cat:'party',emoji:'&#127750;',grad:'g1',igrad:'gi2',desc:'Stunning rooftop ballroom with panoramic city views. Ultimate venue for upscale parties.',facilities:['Air Conditioning','Parking','WiFi','Catering','Security'],featured:false},
-  {id:7,name:'Pearl Convention Centre',city:'Hyderabad',addr:'HITEC City, Hyderabad 500081',cap:1200,price:63000,rating:4.7,reviews:441,cat:'corporate',emoji:'&#127967;',grad:'g2',igrad:'gi3',desc:'Premium convention facility. Modern infrastructure for large conferences and exhibitions.',facilities:['Air Conditioning','Parking','WiFi','AV System','Stage','Security','Catering'],featured:false}
+  {id:1,name:'Heritage Durbar Hall',city:'Chennai',addr:'Anna Salai, Chennai 600002',cap:1000,price:65000,rating:4.9,reviews:421,cat:'wedding',img:'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800',desc:'A magnificent heritage hall with Chettinad grandeur. Perfect for grand weddings and royal celebrations.',facilities:['Air Conditioning','Parking','WiFi','Catering','AV System','Stage','Security'],featured:true},
+  {id:2,name:'Azure Convention Centre',city:'Mumbai',addr:'Bandra Kurla Complex, Mumbai',cap:600,price:82000,rating:5.0,reviews:203,cat:'corporate',img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=800',desc:'Modern waterfront convention centre. Ideal for corporate conferences and product launches.',facilities:['Air Conditioning','Parking','WiFi','AV System','Stage','Security','Catering'],featured:true},
+  {id:3,name:'Emerald Garden Hall',city:'Bangalore',addr:'Indiranagar, Bangalore 560038',cap:400,price:48000,rating:4.7,reviews:88,cat:'wedding',img:'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=800',desc:'Lush outdoor pavilion surrounded by greenery. A romantic setting for garden weddings and intimate events.',facilities:['Parking','Catering','WiFi','AV System'],featured:true},
+  {id:4,name:'Royal Amphitheatre',city:'Delhi',addr:'Connaught Place, New Delhi',cap:2000,price:95000,rating:4.9,reviews:512,cat:'concert',img:'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800',desc:'Grand open-air amphitheatre for concerts and large-scale performances.',facilities:['Parking','Security','AV System','Stage','WiFi'],featured:true},
+  {id:5,name:'Grand Palace Auditorium',city:'Kochi',addr:'Marine Drive, Kochi 682031',cap:800,price:55000,rating:4.8,reviews:350,cat:'wedding',img:'https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?auto=format&fit=crop&q=80&w=800',desc:'Elegant palace-style auditorium. Perfect for royal weddings and high-profile galas.',facilities:['Air Conditioning','Parking','WiFi','Catering','AV System','Stage','Prayer Room','Security'],featured:false},
+  {id:6,name:'Skyline Ballroom',city:'Mumbai',addr:'Lower Parel, Mumbai 400013',cap:500,price:78000,rating:4.9,reviews:612,cat:'party',img:'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800',desc:'Stunning rooftop ballroom with panoramic city views. Ultimate venue for upscale parties.',facilities:['Air Conditioning','Parking','WiFi','Catering','Security'],featured:false},
+  {id:7,name:'Pearl Convention Centre',city:'Hyderabad',addr:'HITEC City, Hyderabad 500081',cap:1200,price:63000,rating:4.7,reviews:441,cat:'corporate',img:'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800',desc:'Premium convention facility. Modern infrastructure for large conferences and exhibitions.',facilities:['Air Conditioning','Parking','WiFi','AV System','Stage','Security','Catering'],featured:false}
 ];
 
 var USERS = {
@@ -1541,7 +1559,7 @@ var USERS = {
 };
 
 var currentUser = null;
-var savedIds = [];
+var savedIds = new Set();
 var myBookings = [
   {id:'VB-A82K91',venueId:5,venue:'Grand Palace Auditorium',date:'Apr 18, 2026',time:'9:00 AM to 5:00 PM',type:'Wedding Ceremony',guests:350,price:55000,status:'confirmed'},
   {id:'VB-B34T22',venueId:2,venue:'Azure Convention Centre',date:'Mar 28, 2026',time:'9:00 AM to 5:00 PM',type:'Corporate Conference',guests:120,price:82000,status:'pending'}
@@ -1574,8 +1592,7 @@ var toastTimer;
 function R(id) { return document.getElementById(id); }
 
 function hasSaved(id) {
-  for (var i = 0; i < savedIds.length; i++) { if (savedIds[i] === id) return true; }
-  return false;
+  return savedIds.has(id);
 }
 
 function starsHTML(r, white) {
@@ -1609,7 +1626,7 @@ function doLogin() {
   try {
     localStorage.setItem('vb_user', JSON.stringify(currentUser));
     localStorage.setItem('vb_bookings', JSON.stringify(myBookings));
-    localStorage.setItem('vb_saved', JSON.stringify(savedIds));
+    localStorage.setItem('vb_saved', JSON.stringify(Array.from(savedIds)));
   } catch(e) {}
   R('auth-login').classList.remove('active');
   R('main-app').style.display = 'block';
@@ -1642,7 +1659,7 @@ function doLogout() {
     localStorage.removeItem('vb_saved');
   } catch(e) {}
   currentUser = null;
-  savedIds = [];
+  savedIds = new Set();
   myBookings = [];
   R('main-app').style.display = 'none';
   R('bottom-nav').classList.remove('visible');
@@ -1662,7 +1679,7 @@ function saveState() {
     if (currentUser) {
       localStorage.setItem('vb_user', JSON.stringify(currentUser));
       localStorage.setItem('vb_bookings', JSON.stringify(myBookings));
-      localStorage.setItem('vb_saved', JSON.stringify(savedIds));
+      localStorage.setItem('vb_saved', JSON.stringify(Array.from(savedIds)));
     }
   } catch(e) {}
 }
@@ -1678,7 +1695,7 @@ function restoreSession() {
     if (savedBk) myBookings = JSON.parse(savedBk);
     // Restore saved venues
     var savedSv = localStorage.getItem('vb_saved');
-    if (savedSv) savedIds = JSON.parse(savedSv);
+    if (savedSv) savedIds = new Set(JSON.parse(savedSv));
     return true;
   } catch(e) {
     return false;
@@ -1694,7 +1711,7 @@ function setupApp() {
   el = R('ph-role'); if (el) el.textContent = role==='owner' ? 'Venue Owner' : role==='admin' ? 'Administrator' : 'Guest';
   var fn = currentUser.name.split(' ')[0];
   el = R('home-headline');
-  if (el) el.innerHTML = 'Hello, ' + fn + '! &#128075;<br><em style="color:#FF385C;font-family:var(--font-d);">Find Your</em> Venue';
+  if (el) el.innerHTML = 'Hello, ' + escapeHTML(fn) + '! &#128075;<br><em style="color:#FF385C;font-family:var(--font-d);">Find Your</em> Venue';
 
   if (role === 'owner') {
     el = R('nt-bookings'); if (el) el.style.display = 'none';
@@ -1738,8 +1755,8 @@ function renderCarousel() {
   var html = '';
   for (var i = 0; i < featured.length; i++) {
     var v = featured[i];
-    html += '<div class="fc ' + v.grad + '" onclick="openDetail(' + v.id + ')">';
-    html += '<div class="fc-bg">' + v.emoji + '</div>';
+    html += '<div class="fc" onclick="openDetail(' + v.id + ')">';
+    html += '<div class="fc-bg" style="background-image:url(\'' + v.img + '\');"></div>';
     html += '<div class="fc-grad"></div>';
     html += '<div class="fc-body">';
     html += '<div class="fc-name">' + v.name + '</div>';
@@ -1777,7 +1794,7 @@ function renderVenueList(containerId, venues) {
     var v = venues[i];
     var sv = hasSaved(v.id);
     html += '<div class="vc" onclick="openDetail(' + v.id + ')">';
-    html += '<div class="vc-img ' + v.igrad + '">' + v.emoji + '</div>';
+    html += '<div class="vc-img" style="background-image:url(\'' + v.img + '\');"></div>';
     html += '<div class="vc-body"><div>';
     html += '<div class="vc-name">' + v.name + '</div>';
     html += '<div class="vc-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + v.city + '</div>';
@@ -1796,39 +1813,39 @@ function renderVenueList(containerId, venues) {
 // VENUE SLIDE DATA — emoji + gradient per category, 5 slides each
 var VENUE_SLIDES = {
   wedding: [
-    { emoji: '&#128141;', label: 'Main Hall',      grad: 'linear-gradient(145deg,#2C1A0E,#6B3A2A)' },
-    { emoji: '&#128144;', label: 'Bridal Suite',   grad: 'linear-gradient(145deg,#1A0A1A,#5C1A4A)' },
-    { emoji: '&#127800;', label: 'Garden Area',    grad: 'linear-gradient(145deg,#0A2010,#1A5C30)' },
-    { emoji: '&#127860;', label: 'Dining Hall',    grad: 'linear-gradient(145deg,#1A1000,#5C4010)' },
-    { emoji: '&#10024;',  label: 'Stage & Decor',  grad: 'linear-gradient(145deg,#0A0A2C,#1A1A6B)' }
+    { label: 'Main Hall',      img: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Bridal Suite',   img: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Garden Area',    img: 'https://images.unsplash.com/photo-1545167622-3a6ac756afa4?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Dining Hall',    img: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Stage & Decor',  img: 'https://images.unsplash.com/photo-1478146896981-b80fe463b330?auto=format&fit=crop&q=80&w=800' }
   ],
   corporate: [
-    { emoji: '&#127970;', label: 'Conference Hall',   grad: 'linear-gradient(145deg,#0A1020,#1A3060)' },
-    { emoji: '&#128202;', label: 'Board Room',        grad: 'linear-gradient(145deg,#0D1A0D,#1A3A1A)' },
-    { emoji: '&#127926;', label: 'Auditorium',        grad: 'linear-gradient(145deg,#1A0A0A,#4A1A1A)' },
-    { emoji: '&#128225;', label: 'Presentation Area', grad: 'linear-gradient(145deg,#0A0A1A,#2A2A5A)' },
-    { emoji: '&#9749;',   label: 'Lounge',            grad: 'linear-gradient(145deg,#1A1000,#3A2A00)' }
+    { label: 'Conference Hall',   img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Board Room',        img: 'https://images.unsplash.com/photo-1549451371-64aa98a6f660?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Auditorium',        img: 'https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Presentation Area', img: 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Lounge',            img: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&q=80&w=800' }
   ],
   concert: [
-    { emoji: '&#127914;', label: 'Main Stage',     grad: 'linear-gradient(145deg,#0A001A,#2A006A)' },
-    { emoji: '&#127908;', label: 'Sound Setup',    grad: 'linear-gradient(145deg,#1A0A00,#5A2A00)' },
-    { emoji: '&#127899;', label: 'Lighting Rig',   grad: 'linear-gradient(145deg,#0A0A00,#3A3A00)' },
-    { emoji: '&#127917;', label: 'Backstage',      grad: 'linear-gradient(145deg,#1A001A,#4A004A)' },
-    { emoji: '&#127882;', label: 'VIP Lounge',     grad: 'linear-gradient(145deg,#0A1A10,#004A28)' }
+    { label: 'Main Stage',     img: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Sound Setup',    img: 'https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Lighting Rig',   img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Backstage',      img: 'https://images.unsplash.com/photo-1541532713592-79a0317b6b77?auto=format&fit=crop&q=80&w=800' },
+    { label: 'VIP Lounge',     img: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=800' }
   ],
   party: [
-    { emoji: '&#127881;', label: 'Banquet Hall',   grad: 'linear-gradient(145deg,#1A000A,#5A0030)' },
-    { emoji: '&#127942;', label: 'Dance Floor',    grad: 'linear-gradient(145deg,#0A0A1A,#2A006A)' },
-    { emoji: '&#127870;', label: 'Dining Area',    grad: 'linear-gradient(145deg,#1A0800,#4A2000)' },
-    { emoji: '&#127880;', label: 'Decor Setup',    grad: 'linear-gradient(145deg,#0A1000,#004A20)' },
-    { emoji: '&#127928;', label: 'DJ Booth',       grad: 'linear-gradient(145deg,#1A001A,#500050)' }
+    { label: 'Banquet Hall',   img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Dance Floor',    img: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Dining Area',    img: 'https://images.unsplash.com/photo-1543807535-eceef0bc6599?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Decor Setup',    img: 'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&fit=crop&q=80&w=800' },
+    { label: 'DJ Booth',       img: 'https://images.unsplash.com/photo-1508215885820-4585e56135c8?auto=format&fit=crop&q=80&w=800' }
   ],
   default: [
-    { emoji: '&#127963;', label: 'Grand Hall',     grad: 'linear-gradient(145deg,#1A0E05,#5C3A18)' },
-    { emoji: '&#127984;', label: 'Foyer',          grad: 'linear-gradient(145deg,#0E1A10,#1A4A22)' },
-    { emoji: '&#127968;', label: 'Reception',      grad: 'linear-gradient(145deg,#0A0E1A,#1A2A5C)' },
-    { emoji: '&#128247;', label: 'Event Space',    grad: 'linear-gradient(145deg,#1A1010,#4A2020)' },
-    { emoji: '&#127749;', label: 'Outdoor Area',   grad: 'linear-gradient(145deg,#051A10,#0A4A28)' }
+    { label: 'Grand Hall',     img: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Foyer',          img: 'https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Reception',      img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Event Space',    img: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&q=80&w=800' },
+    { label: 'Outdoor Area',   img: 'https://images.unsplash.com/photo-1545167622-3a6ac756afa4?auto=format&fit=crop&q=80&w=800' }
   ]
 };
 
@@ -1878,16 +1895,15 @@ function openDetail(id) {
   galleryIdx = 0;
   galleryPhotos = getPhotos(v.cat);
 
-  // Build slides — emoji on gradient background, always renders
+  // Build slides
   var slidesHtml = '';
   for (var i = 0; i < galleryPhotos.length; i++) {
     var slide = galleryPhotos[i];
-    slidesHtml += '<div class="gallery-slide" style="background:' + slide.grad + ';">';
-    slidesHtml += '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;">';
-    slidesHtml += '<span style="font-size:72px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">' + slide.emoji + '</span>';
-    slidesHtml += '<span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.5px;text-transform:uppercase;">' + slide.label + '</span>';
-    slidesHtml += '</div>';
+    slidesHtml += '<div class="gallery-slide" style="background-image:url(\'' + slide.img + '\');">';
     slidesHtml += '<div class="slide-overlay"></div>';
+    slidesHtml += '<div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);text-align:center;z-index:20;">';
+    slidesHtml += '<span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.9);letter-spacing:.5px;text-transform:uppercase;text-shadow:0 1px 4px rgba(0,0,0,0.5);">' + slide.label + '</span>';
+    slidesHtml += '</div>';
     slidesHtml += '</div>';
   }
 
@@ -1897,13 +1913,13 @@ function openDetail(id) {
     dotsHtml += '<div class="gallery-dot' + (i === 0 ? ' active' : '') + '" onclick="galleryGoTo(' + i + ')"></div>';
   }
 
-  // Build thumbnails — emoji matching each slide
+  // Build thumbnails
   var thumbsHtml = '';
   for (var i = 0; i < galleryPhotos.length; i++) {
     var slide = galleryPhotos[i];
-    thumbsHtml += '<div class="thumb-item' + (i === 0 ? ' active' : '') + '" onclick="galleryGoTo(' + i + ')" style="background:' + slide.grad + ';">';
-    thumbsHtml += '<span class="t-emoji">' + slide.emoji + '</span>';
-    thumbsHtml += '<span class="t-num">' + slide.label + '</span>';
+    thumbsHtml += '<div class="thumb-item' + (i === 0 ? ' active' : '') + '" onclick="galleryGoTo(' + i + ')" style="background-image:url(\'' + slide.img + '\');">';
+    thumbsHtml += '<div style="position:absolute;inset:0;background:rgba(0,0,0,.3);"></div>';
+    thumbsHtml += '<span class="t-num" style="position:relative;z-index:1;">' + slide.label + '</span>';
     thumbsHtml += '</div>';
   }
 
@@ -2026,15 +2042,13 @@ function applyFilter() {
 
 // SAVED
 function toggleSaved(btn, id) {
-  var idx = -1;
-  for (var i = 0; i < savedIds.length; i++) { if (savedIds[i] === id) { idx = i; break; } }
-  if (idx >= 0) {
-    savedIds.splice(idx, 1);
+  if (savedIds.has(id)) {
+    savedIds.delete(id);
     btn.classList.remove('saved');
     btn.querySelector('svg').setAttribute('fill', 'none');
     showToast('Removed from saved');
   } else {
-    savedIds.push(id);
+    savedIds.add(id);
     btn.classList.add('saved');
     btn.querySelector('svg').setAttribute('fill', 'currentColor');
     showToast('Saved!', 'ok');
@@ -2157,6 +2171,16 @@ function confirmBooking() {
 
   var cr = R('conf-ref'); if (cr) cr.textContent = ref;
 
+  renderBookingSummary(v, dateStr, timeStr, type, guests);
+
+  saveState();
+  renderBookings('all');
+  updateProfileStats();
+  navTo('confirm');
+  showToast('Booking sent!', 'ok');
+}
+
+function renderBookingSummary(v, dateStr, timeStr, type, guests) {
   var cd = R('conf-details');
   if (cd) {
     cd.innerHTML =
@@ -2193,12 +2217,6 @@ function confirmBooking() {
         '<span class="cdr-total">' + rupee(Math.round(v.price * 1.05)) + '</span>' +
       '</div>';
   }
-
-  saveState();
-  renderBookings('all');
-  updateProfileStats();
-  navTo('confirm');
-  showToast('Booking sent!', 'ok');
 }
 
 // BOOKINGS LIST
@@ -2277,7 +2295,7 @@ function setInboxTab(el, filter) {
 function updateProfileStats() {
   var el;
   el = R('ps-bk'); if (el) el.textContent = myBookings.length;
-  el = R('ps-saved'); if (el) el.textContent = savedIds.length;
+  el = R('ps-saved'); if (el) el.textContent = savedIds.size;
 }
 
 // OWNER
@@ -2330,7 +2348,7 @@ function renderOwnerVenues() {
   for (var i = 0; i < Math.min(3, VENUES.length); i++) {
     var v = VENUES[i];
     html += '<div style="background:#fff;border:1px solid #EBEBEB;border-radius:22px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.07);">';
-    html += '<div class="' + v.grad + '" style="height:100px;display:flex;align-items:center;justify-content:center;font-size:44px;">' + v.emoji + '</div>';
+    html += '<div style="height:100px;background-image:url(\'' + v.img + '\');background-size:cover;background-position:center;background-repeat:no-repeat;background-color:#EBEBEB;"></div>';
     html += '<div style="padding:14px;">';
     html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;"><div style="font-size:15px;font-weight:700;">' + v.name + '</div><span class="badge badge-green">Active</span></div>';
     html += '<div style="font-size:12px;color:#717171;margin-bottom:10px;">&#128205; ' + v.city + ' &middot; &#128101; ' + v.cap.toLocaleString('en-IN') + '</div>';
@@ -2365,11 +2383,15 @@ function publishVenue() {
   var cap = parseInt(R('av-cap').value) || 0;
   var price = parseInt(R('av-price').value) || 0;
   if (!name || !city || !cap || !price) { showToast('Please fill all required fields', 'err'); return; }
-  var emojis = ['&#127963;','&#127970;','&#127917;','&#127807;','&#127984;','&#127750;'];
-  var grads = ['g1','g2','g3','g4','g5'];
-  var igrads = ['gi1','gi2','gi3','gi4','gi5'];
-  var idx = Math.floor(Math.random() * 5);
-  VENUES.push({id:VENUES.length+1, name:name, city:city, addr:R('av-addr').value||city, cap:cap, price:price, rating:5.0, reviews:0, cat:R('av-cat').value||'venue', emoji:emojis[idx], grad:grads[idx], igrad:igrads[idx], desc:R('av-desc').value||'A beautiful event venue.', facilities:myFacilities.slice(), featured:false});
+  var images = [
+    'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800',
+    'https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?auto=format&fit=crop&q=80&w=800'
+  ];
+  var idx = Math.floor(Math.random() * images.length);
+  VENUES.push({id:VENUES.length+1, name:name, city:city, addr:R('av-addr').value||city, cap:cap, price:price, rating:5.0, reviews:0, cat:R('av-cat').value||'venue', img:images[idx], desc:R('av-desc').value||'A beautiful event venue.', facilities:myFacilities.slice(), featured:false});
   myFacilities = [];
   var cnt = R('os-venues'); if (cnt) cnt.textContent = parseInt(cnt.textContent) + 1;
   showToast('Venue published!', 'ok');
@@ -2432,7 +2454,7 @@ function saveProfile() {
   el = R('ph-name'); if (el) el.textContent = currentUser.name;
   var fn = newName.split(' ')[0];
   el = R('home-headline');
-  if (el) el.innerHTML = 'Hello, ' + fn + '! &#128075;<br><em style="color:#FF385C;font-family:Georgia,serif;">Find Your</em> Venue';
+  if (el) el.innerHTML = 'Hello, ' + escapeHTML(fn) + '! &#128075;<br><em style="color:#FF385C;font-family:Georgia,serif;">Find Your</em> Venue';
 
   saveState();
   closeModal('edit-profile-modal');
@@ -2445,12 +2467,12 @@ function sendChat() {
   if (!inp || !msgs || !inp.value.trim()) return;
   var userMsg = inp.value.trim();
   inp.value = '';
-  msgs.innerHTML += '<div style="display:flex;justify-content:flex-end;margin-bottom:14px;"><div style="background:#111111;border-radius:12px 0 12px 12px;padding:10px 13px;max-width:80%;"><div style="font-size:13px;color:#fff;line-height:1.5;">' + userMsg + '</div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:4px;text-align:right;">Just now</div></div></div>';
+  msgs.innerHTML += '<div style="display:flex;justify-content:flex-end;margin-bottom:14px;"><div style="background:#111111;border-radius:12px 0 12px 12px;padding:10px 13px;max-width:80%;"><div style="font-size:13px;color:#fff;line-height:1.5;">' + escapeHTML(userMsg) + '</div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:4px;text-align:right;">Just now</div></div></div>';
   msgs.scrollTop = msgs.scrollHeight;
   var reply = chatReplies[chatReplyIdx % chatReplies.length];
   chatReplyIdx++;
   setTimeout(function() {
-    msgs.innerHTML += '<div style="display:flex;gap:8px;margin-bottom:14px;"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#FF385C,#FF8C42);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">VA</div><div style="background:#fff;border-radius:0 12px 12px 12px;padding:10px 13px;max-width:80%;box-shadow:0 1px 4px rgba(0,0,0,0.07);"><div style="font-size:13px;color:#111111;line-height:1.5;">' + reply + '</div><div style="font-size:10px;color:#B0B0B0;margin-top:4px;">Just now</div></div></div>';
+    msgs.innerHTML += '<div style="display:flex;gap:8px;margin-bottom:14px;"><div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#FF385C,#FF8C42);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">VA</div><div style="background:#fff;border-radius:0 12px 12px 12px;padding:10px 13px;max-width:80%;box-shadow:0 1px 4px rgba(0,0,0,0.07);"><div style="font-size:13px;color:#111111;line-height:1.5;">' + escapeHTML(reply) + '</div><div style="font-size:10px;color:#B0B0B0;margin-top:4px;">Just now</div></div></div>';
     msgs.scrollTop = msgs.scrollHeight;
   }, 800);
 }
