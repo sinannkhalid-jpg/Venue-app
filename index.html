@@ -1770,11 +1770,13 @@ function renderCarousel() {
 }
 
 function updateDots(el) {
-  var cards = el.querySelectorAll('.fc');
+  var cards = el.children;
   if (!cards.length) return;
   var w = cards[0].offsetWidth + 14;
   var idx = Math.round(el.scrollLeft / w);
-  var dots = document.querySelectorAll('#carousel-dots .dot');
+  var dotsContainer = document.getElementById('carousel-dots');
+  if (!dotsContainer) return;
+  var dots = dotsContainer.children;
   for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('active', i === idx);
 }
 
