@@ -1573,6 +1573,16 @@ var toastTimer;
 
 function R(id) { return document.getElementById(id); }
 
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function hasSaved(id) {
   for (var i = 0; i < savedIds.length; i++) { if (savedIds[i] === id) return true; }
   return false;
@@ -1694,7 +1704,7 @@ function setupApp() {
   el = R('ph-role'); if (el) el.textContent = role==='owner' ? 'Venue Owner' : role==='admin' ? 'Administrator' : 'Guest';
   var fn = currentUser.name.split(' ')[0];
   el = R('home-headline');
-  if (el) el.innerHTML = 'Hello, ' + fn + '! &#128075;<br><em style="color:#FF385C;font-family:var(--font-d);">Find Your</em> Venue';
+  if (el) el.innerHTML = 'Hello, ' + escapeHTML(fn) + '! &#128075;<br><em style="color:#FF385C;font-family:var(--font-d);">Find Your</em> Venue';
 
   if (role === 'owner') {
     el = R('nt-bookings'); if (el) el.style.display = 'none';
@@ -2432,7 +2442,7 @@ function saveProfile() {
   el = R('ph-name'); if (el) el.textContent = currentUser.name;
   var fn = newName.split(' ')[0];
   el = R('home-headline');
-  if (el) el.innerHTML = 'Hello, ' + fn + '! &#128075;<br><em style="color:#FF385C;font-family:Georgia,serif;">Find Your</em> Venue';
+  if (el) el.innerHTML = 'Hello, ' + escapeHTML(fn) + '! &#128075;<br><em style="color:#FF385C;font-family:Georgia,serif;">Find Your</em> Venue';
 
   saveState();
   closeModal('edit-profile-modal');
