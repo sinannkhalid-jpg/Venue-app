@@ -1588,6 +1588,15 @@ var chatReplies = [
 var chatReplyIdx = 0;
 var toastTimer;
 
+function escapeHTML(str) {
+  if (typeof str !== 'string') return str;
+  return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+}
+
 function R(id) { return document.getElementById(id); }
 
 function hasSaved(id) {
@@ -1888,14 +1897,18 @@ function galTouchEnd(e) {
   if (Math.abs(dx) > 40) galleryGo(dx > 0 ? 1 : -1);
 }
 
-function openDetail(id) {
-  var v = null;
-  for (var i = 0; i < VENUES.length; i++) { if (VENUES[i].id === id) { v = VENUES[i]; break; } }
-  if (!v) return;
-  currentVenueId = id;
-  galleryIdx = 0;
-  galleryPhotos = getPhotos(v.cat);
 
+function buildGallerySlidesHtml(photos) {
+  var html = '';
+  for (var i = 0; i < photos.length; i++) {
+    var slide = photos[i];
+    html += '<div class="gallery-slide" style="background:' + escapeHTML(slide.grad || '') + ';">';
+    html += '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:10px;">';
+    html += '<span style="font-size:72px;line-height:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4));">' + escapeHTML(slide.emoji || '') + '</span>';
+    html += '<span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.65);letter-spacing:.5px;text-transform:uppercase;">' + escapeHTML(slide.label || '') + '</span>';
+    html += '</div>';
+    html += '<div class="slide-overlay"></div>';
+    html += '</div>';
   // Build slides
   var slidesHtml = '';
   for (var i = 0; i < galleryPhotos.length; i++) {
@@ -1907,13 +1920,25 @@ function openDetail(id) {
     slidesHtml += '</div>';
     slidesHtml += '</div>';
   }
+  return html;
+}
 
-  // Build dots
-  var dotsHtml = '';
-  for (var i = 0; i < galleryPhotos.length; i++) {
-    dotsHtml += '<div class="gallery-dot' + (i === 0 ? ' active' : '') + '" onclick="galleryGoTo(' + i + ')"></div>';
+function buildGalleryDotsHtml(photos) {
+  var html = '';
+  for (var i = 0; i < photos.length; i++) {
+    html += '<div class="gallery-dot' + (i === 0 ? ' active' : '') + '" onclick="galleryGoTo(' + i + ')"></div>';
   }
+  return html;
+}
 
+function buildThumbnailsHtml(photos) {
+  var html = '';
+  for (var i = 0; i < photos.length; i++) {
+    var slide = photos[i];
+    html += '<div class="thumb-item' + (i === 0 ? ' active' : '') + '" onclick="galleryGoTo(' + i + ')" style="background:' + escapeHTML(slide.grad || '') + ';">';
+    html += '<span class="t-emoji">' + escapeHTML(slide.emoji || '') + '</span>';
+    html += '<span class="t-num">' + escapeHTML(slide.label || '') + '</span>';
+    html += '</div>';
   // Build thumbnails
   var thumbsHtml = '';
   for (var i = 0; i < galleryPhotos.length; i++) {
@@ -1923,36 +1948,68 @@ function openDetail(id) {
     thumbsHtml += '<span class="t-num" style="position:relative;z-index:1;">' + slide.label + '</span>';
     thumbsHtml += '</div>';
   }
+  return html;
+}
 
-  // Build facilities
-  var facHtml = '';
-  for (var i = 0; i < v.facilities.length; i++) {
-    facHtml += '<div class="fac-item"><span style="color:#00A699;">&#10003;</span>' + v.facilities[i] + '</div>';
+function buildFacilitiesHtml(facilities) {
+  var html = '';
+  for (var i = 0; i < facilities.length; i++) {
+    html += '<div class="fac-item"><span style="color:#00A699;">&#10003;</span>' + escapeHTML(facilities[i]) + '</div>';
   }
+  return html;
+}
+
+function buildReviewsHtml() {
+  var html = '';
+  html += '<div class="review"><div class="review-hdr"><div class="review-avatar" style="background:linear-gradient(135deg,#FF385C,#FF8C42);">AR</div><div><div class="review-name">Ahmed Rizwan</div><div style="display:flex;gap:2px;margin-top:2px;">' + starsHTML(5, false) + '</div></div><div style="margin-left:auto;font-size:11px;color:#B0B0B0;">2 weeks ago</div></div><div class="review-text">Absolutely stunning venue! Perfect for our wedding. Staff went above and beyond. Highly recommended!</div></div>';
+  html += '<div class="review"><div class="review-hdr"><div class="review-avatar" style="background:linear-gradient(135deg,#6060E8,#A98FF0);">PL</div><div><div class="review-name">Priya Laksmi</div><div style="display:flex;gap:2px;margin-top:2px;">' + starsHTML(4, false) + '</div></div><div style="margin-left:auto;font-size:11px;color:#B0B0B0;">1 month ago</div></div><div class="review-text">Great venue for corporate events. AV equipment is top-notch and catering was excellent. Would book again.</div></div>';
+  html += '<div class="review"><div class="review-hdr"><div class="review-avatar" style="background:linear-gradient(135deg,#00A699,#007A6E);">SK</div><div><div class="review-name">Suresh Kumar</div><div style="display:flex;gap:2px;margin-top:2px;">' + starsHTML(5, false) + '</div></div><div style="margin-left:auto;font-size:11px;color:#B0B0B0;">3 months ago</div></div><div class="review-text">Wonderful experience from start to finish. The ambience was magical and the team was very professional throughout.</div></div>';
+  return html;
+}
+
+function buildStickyBarHtml(v) {
+  var html = '';
+  html += '<div class="sticky-bar">';
+  html += '<div style="flex:1;"><div class="sticky-price">' + rupee(Math.round(v.price / 1000)) + 'K <span>/ day</span></div><div style="font-size:11px;color:#717171;margin-top:2px;">' + v.cap.toLocaleString('en-IN') + ' guests max</div></div>';
+  html += '<button style="background:#111111;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:14px;font-weight:700;cursor:pointer;" onclick="openBooking(' + v.id + ')">Book Now</button>';
+  html += '</div>';
+  return html;
+}
+
+function buildGalleryControlsHtml(photosCount) {
+  var html = '';
+  html += '<div class="gallery-controls">';
+  html += '<div class="detail-back" onclick="navTo(\'home\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>';
+  html += '<div class="detail-share" onclick="showToast(\'Link copied!\',\'ok\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>';
+  html += '</div>';
+  html += '<div class="gallery-counter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span id="gallery-counter-num">1 / ' + photosCount + '</span></div>';
+  html += '<div style="position:absolute;bottom:14px;left:14px;display:flex;gap:6px;z-index:10;">';
+  html += '<span class="badge badge-green">Available</span>';
+  html += '</div>';
+  return html;
+}
+
+
+function openDetail(id) {
+  var v = null;
+  for (var i = 0; i < VENUES.length; i++) { if (VENUES[i].id === id) { v = VENUES[i]; break; } }
+  if (!v) return;
+  currentVenueId = id;
+  galleryIdx = 0;
+  galleryPhotos = getPhotos(v.cat);
+
+  var slidesHtml = buildGallerySlidesHtml(galleryPhotos);
+  var dotsHtml = buildGalleryDotsHtml(galleryPhotos);
+  var thumbsHtml = buildThumbnailsHtml(galleryPhotos);
+  var facHtml = buildFacilitiesHtml(v.facilities);
 
   var html = '';
 
   // PHOTO GALLERY
   html += '<div class="detail-gallery" ontouchstart="galTouchStart(event)" ontouchend="galTouchEnd(event)">';
   html += '<div class="gallery-track" id="gallery-track">' + slidesHtml + '</div>';
-
-  // Controls overlay
-  html += '<div class="gallery-controls">';
-  html += '<div class="detail-back" onclick="navTo(\'home\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>';
-  html += '<div class="detail-share" onclick="showToast(\'Link copied!\',\'ok\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>';
-  html += '</div>';
-
-  // Dots
+  html += buildGalleryControlsHtml(galleryPhotos.length);
   html += '<div class="gallery-dots">' + dotsHtml + '</div>';
-
-  // Counter
-  html += '<div class="gallery-counter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span id="gallery-counter-num">1 / ' + galleryPhotos.length + '</span></div>';
-
-  // Badges bottom-left
-  html += '<div style="position:absolute;bottom:14px;left:14px;display:flex;gap:6px;z-index:10;">';
-  html += '<span class="badge badge-green">Available</span>';
-  html += '</div>';
-
   html += '</div>'; // end detail-gallery
 
   // THUMBNAIL STRIP
@@ -1962,13 +2019,13 @@ function openDetail(id) {
   html += '<div class="detail-body">';
   html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;">';
   html += '<div style="flex:1;padding-right:12px;">';
-  html += '<div style="font-family:var(--font-d);font-size:22px;font-weight:500;color:#111111;letter-spacing:-.3px;">' + v.name + '</div>';
+  html += '<div style="font-family:var(--font-d);font-size:22px;font-weight:500;color:#111111;letter-spacing:-.3px;">' + escapeHTML(v.name) + '</div>';
   html += '<div style="display:flex;gap:4px;margin-top:5px;align-items:center;">' + starsHTML(v.rating, false) + '<span style="font-size:13px;color:#717171;margin-left:4px;">' + v.rating + ' &middot; ' + v.reviews + ' reviews</span></div>';
   html += '</div>';
   html += '<div style="text-align:right;"><div class="detail-price">' + rupee(Math.round(v.price / 1000)) + 'K<span> / day</span></div></div>';
   html += '</div>';
   html += '<div style="display:flex;align-items:center;gap:5px;margin-top:8px;font-size:13px;color:#717171;">';
-  html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + v.addr;
+  html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + escapeHTML(v.addr);
   html += '</div>';
   html += '<div class="info-row">';
   html += '<div class="info-chip">&#128101; Up to ' + v.cap.toLocaleString('en-IN') + ' guests</div>';
@@ -1977,27 +2034,23 @@ function openDetail(id) {
   html += '</div>';
   html += '<div class="divider"></div>';
   html += '<div style="font-size:16px;font-weight:700;margin-bottom:10px;">About This Venue</div>';
-  html += '<div style="font-size:14px;color:#717171;line-height:1.65;">' + v.desc + '</div>';
+  html += '<div style="font-size:14px;color:#717171;line-height:1.65;">' + escapeHTML(v.desc) + '</div>';
   html += '<div class="divider"></div>';
   html += '<div style="font-size:16px;font-weight:700;margin-bottom:12px;">Facilities &amp; Amenities</div>';
   html += '<div class="fac-grid">' + facHtml + '</div>';
   html += '<div class="divider"></div>';
   html += '<div style="font-size:16px;font-weight:700;margin-bottom:12px;">Guest Reviews</div>';
-  html += '<div class="review"><div class="review-hdr"><div class="review-avatar" style="background:linear-gradient(135deg,#FF385C,#FF8C42);">AR</div><div><div class="review-name">Ahmed Rizwan</div><div style="display:flex;gap:2px;margin-top:2px;">' + starsHTML(5, false) + '</div></div><div style="margin-left:auto;font-size:11px;color:#B0B0B0;">2 weeks ago</div></div><div class="review-text">Absolutely stunning venue! Perfect for our wedding. Staff went above and beyond. Highly recommended!</div></div>';
-  html += '<div class="review"><div class="review-hdr"><div class="review-avatar" style="background:linear-gradient(135deg,#6060E8,#A98FF0);">PL</div><div><div class="review-name">Priya Laksmi</div><div style="display:flex;gap:2px;margin-top:2px;">' + starsHTML(4, false) + '</div></div><div style="margin-left:auto;font-size:11px;color:#B0B0B0;">1 month ago</div></div><div class="review-text">Great venue for corporate events. AV equipment is top-notch and catering was excellent. Would book again.</div></div>';
-  html += '<div class="review"><div class="review-hdr"><div class="review-avatar" style="background:linear-gradient(135deg,#00A699,#007A6E);">SK</div><div><div class="review-name">Suresh Kumar</div><div style="display:flex;gap:2px;margin-top:2px;">' + starsHTML(5, false) + '</div></div><div style="margin-left:auto;font-size:11px;color:#B0B0B0;">3 months ago</div></div><div class="review-text">Wonderful experience from start to finish. The ambience was magical and the team was very professional throughout.</div></div>';
+  html += buildReviewsHtml();
   html += '<div style="height:80px;"></div>';
   html += '</div>'; // end detail-body
 
   // STICKY BOOK BAR
-  html += '<div class="sticky-bar">';
-  html += '<div style="flex:1;"><div class="sticky-price">' + rupee(Math.round(v.price / 1000)) + 'K <span>/ day</span></div><div style="font-size:11px;color:#717171;margin-top:2px;">' + v.cap.toLocaleString('en-IN') + ' guests max</div></div>';
-  html += '<button style="background:#111111;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:14px;font-weight:700;cursor:pointer;" onclick="openBooking(' + v.id + ')">Book Now</button>';
-  html += '</div>';
+  html += buildStickyBarHtml(v);
 
   R('detail-inner').innerHTML = html;
   navTo('detail');
 }
+
 
 // SEARCH
 function doSearch(q) {
