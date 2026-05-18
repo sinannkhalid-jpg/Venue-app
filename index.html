@@ -1599,6 +1599,16 @@ function escapeHTML(str) {
 
 function R(id) { return document.getElementById(id); }
 
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function hasSaved(id) {
   return savedIds.has(id);
 }
