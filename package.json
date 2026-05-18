@@ -1,0 +1,21 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "The app will let you book the convection centre",
+  "main": "test.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sinannkhalid-jpg/Venue-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sinannkhalid-jpg/Venue-app/issues"
+  },
+  "homepage": "https://github.com/sinannkhalid-jpg/Venue-app#readme"
+}
